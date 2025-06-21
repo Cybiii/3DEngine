@@ -1,0 +1,221 @@
+# Build directories
+build/
+test_build/
+manual_build/
+out/
+debug/
+release/
+bin/
+lib/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+CTestTestfile.cmake
+Testing/
+
+# Compiler output files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.exp
+
+# Preprocessor files
+*.i
+*.ii
+*.s
+*.S
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.tmp
+
+# Package files
+*.deb
+*.rpm
+*.pkg
+*.dmg
+*.msi
+
+# IDE and Editor files
+# Visual Studio
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# CLion
+.idea/
+cmake-build-*/
+
+# Qt Creator
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.moved-aside
+DerivedData/
+
+# Code::Blocks
+*.cbp
+*.layout
+*.depend
+
+# Dev-C++
+*.dev
+
+# Temporary files
+*~
+*.swp
+*.swo
+*tmp*
+*.temp
+*.bak
+*.backup
+
+# OS specific files
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Linux
+*~
+.directory
+.fuse_hidden*
+.nfs*
+
+# Third-party downloaded files
+ThirdParty/glfw-*/
+ThirdParty/glm-*/
+ThirdParty/**/build/
+ThirdParty/**/lib/
+ThirdParty/**/bin/
+*.zip
+*.tar.gz
+*.tar.bz2
+*.7z
+
+# Downloaded GLFW binaries (from build scripts)
+glfw/
+glfw-*/
+
+# Log files
+*.log
+logs/
+
+# Documentation generated files
+doc/html/
+doc/latex/
+docs/html/
+docs/latex/
+
+# Profiling files
+*.gprof
+gmon.out
+callgrind.out.*
+*.gcov
+*.gcda
+*.gcno
+lcov.info
+coverage/
+
+# Static analysis
+*.scan
+.clang_complete
+.ycm_extra_conf.py
+
+# Packaging
+*.tgz
+*.tar
+*.zip
+*.rar
+package/
+dist/
+
+# Test results
+test_results/
+*.xml
+*.junit
+
+# Conan
+conanfile.txt.user
+conan.lock
+conanbuildinfo.*
+conaninfo.txt
+graph_info.json
+
+# vcpkg
+vcpkg_installed/
+
+# FetchContent downloads (CMake)
+_deps/
+
+# Assets (if large)
+# Uncomment if you have large asset files that shouldn't be committed
+# Assets/textures/
+# Assets/models/
+# Assets/audio/
+
+# Shader compiled binaries (if any)
+*.spv
+*.spirv
+
+# Engine specific
+# Core dumps
+core
+*.core
+
+# Crash dumps
+*.crashdump
+*.dump
+
+# Performance profiling
+*.perf
+*.nvprof
+
+# OpenGL debug
+*.gl_debug
+

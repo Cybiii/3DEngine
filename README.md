@@ -2,23 +2,13 @@
 
 A modern, modular 3D graphics engine built from scratch in C++ using OpenGL. This project demonstrates advanced graphics programming concepts and serves as a foundation for 3D applications and games.
 
-## 🎯 Project Overview
+## Project Overview
 
 This 3D engine is being developed in phases, starting with core foundational systems and gradually adding advanced rendering features. The current implementation showcases professional software architecture with clean abstractions and modern C++ practices.
 
-**Current Status: Phase 1 Complete ✅**
 
-## 🚀 Phase 1 Features
 
-- ✅ **Modular Architecture**: Clean separation between Core, Platform, and Renderer systems
-- ✅ **Professional Logging**: Color-coded console output with timestamps and log levels
-- ✅ **Cross-Platform Window Management**: GLFW integration with OpenGL 4.5 Core context
-- ✅ **Modern OpenGL Rendering**: Shader pipeline with vertex arrays and buffers
-- ✅ **Resource Management**: RAII principles with smart pointers
-- ✅ **Event System**: Window and input event handling
-- ✅ **Working Demo**: Colored triangle rendering with vertex attributes
-
-## 🏗️ Architecture
+##  Architecture
 
 ```
 3DEngine/
@@ -41,15 +31,15 @@ This 3D engine is being developed in phases, starting with core foundational sys
 └── Tests/                # Integration tests
 ```
 
-## 🛠️ Dependencies
+## Dependencies
 
 - **OpenGL 4.5+**: Modern graphics API
 - **GLFW 3.3+**: Window management and input
 - **GLAD**: OpenGL function loader
-- **GLM**: Mathematics library (planned for Phase 2)
+- **GLM**: Mathematics library
 - **C++17**: Modern C++ standard
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -61,7 +51,7 @@ This 3D engine is being developed in phases, starting with core foundational sys
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone
 cd 3DEngine
 
 # Run the test build script (Windows)
@@ -90,14 +80,6 @@ cmake --build .
 ./Examples/TriangleDemo
 ```
 
-## 🎮 Demo
-
-The current demo renders a colorful triangle with:
-
-- **Red vertex** at bottom-left
-- **Green vertex** at bottom-right
-- **Blue vertex** at top center
-
 **Controls:**
 
 - `ESC` or close window to exit
@@ -119,44 +101,7 @@ The current demo renders a colorful triangle with:
 - **Event Handling**: Callback-based window and input events
 - **Memory Management**: Smart pointers and automatic cleanup
 
-### Code Quality
-
-- **Modern C++17**: Smart pointers, RAII, type safety
-- **Modular Design**: Clear interfaces and dependency injection
-- **Error Handling**: Comprehensive logging and validation
-- **Cross-Platform**: Abstracted platform-specific code
-
-## 📋 Development Roadmap
-
-### Phase 2: Math Foundation (Next)
-
-- [ ] GLM integration for 3D mathematics
-- [ ] Camera system with view/projection matrices
-- [ ] 3D transformations and model matrices
-- [ ] Input handling system
-
-### Phase 3: Advanced Rendering
-
-- [ ] 3D mesh loading and rendering
-- [ ] Texture system and material properties
-- [ ] Multiple shader support
-- [ ] Basic lighting (Phong/Blinn-Phong)
-
-### Phase 4: Scene Management
-
-- [ ] Scene graph and entity system
-- [ ] Frustum culling and spatial optimization
-- [ ] Multi-object rendering
-- [ ] Transform hierarchies
-
-### Phase 5: Advanced Features
-
-- [ ] Shadow mapping
-- [ ] Post-processing pipeline
-- [ ] Physically Based Rendering (PBR)
-- [ ] Deferred rendering
-
-## 🧪 Testing
+## Testing
 
 Integration tests are included to verify engine functionality:
 
@@ -169,7 +114,7 @@ ctest --verbose
 ./Tests/Phase1IntegrationTests
 ```
 
-## 📝 Logging
+## Logging
 
 The engine features a comprehensive logging system:
 
@@ -189,7 +134,7 @@ Output includes:
 - System/component identification
 - Structured message formatting
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -207,40 +152,3 @@ Output includes:
 
 - Ensure OpenGL context is current before calling gladLoadGL()
 - Check graphics driver compatibility
-
-### Build Issues
-
-**CMake configuration fails**
-
-- Try different generators: `-G "MinGW Makefiles"` or `-G "Ninja"`
-- Ensure all dependencies are installed
-- Clear build directory and retry
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **GLFW Team**: Cross-platform window management and input
-- **OpenGL Community**: Graphics API and documentation
-- **Modern OpenGL Tutorials**: Learning resources and best practices
-- **C++ Community**: Language standards and libraries
-
-## 📞 Contact
-
-- **GitHub**: [Your GitHub Profile]
-- **Email**: [Your Email]
-- **Discord**: [Your Discord]
-
----
-
-**Built with ❤️ and modern C++**

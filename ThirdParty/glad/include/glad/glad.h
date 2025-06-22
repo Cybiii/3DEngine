@@ -68,6 +68,12 @@ typedef ptrdiff_t GLsizeiptr;
 #define GL_STATIC_DRAW 0x88E4
 #define GL_DYNAMIC_DRAW 0x88E8
 #define GL_DEPTH_TEST 0x0B71
+#define GL_BLEND 0x0BE2
+#define GL_SRC_ALPHA 0x0302
+#define GL_ONE_MINUS_SRC_ALPHA 0x0303
+#define GL_FRONT_AND_BACK 0x0408
+#define GL_LINE 0x1B01
+#define GL_FILL 0x1B02
 
 typedef void(APIENTRYP PFNGLCLEARPROC)(GLbitfield mask);
 typedef void(APIENTRYP PFNGLCLEARCOLORPROC)(GLfloat red, GLfloat green,
@@ -80,6 +86,7 @@ typedef void(APIENTRYP PFNGLDRAWELEMTSPROC)(GLenum mode, GLsizei count,
                                             GLenum type, const void *indices);
 typedef void(APIENTRYP PFNGLDRAWARRAYSPROC)(GLenum mode, GLint first,
                                             GLsizei count);
+typedef void(APIENTRYP PFNGLBLENDFUNCPROC)(GLenum sfactor, GLenum dfactor);
 typedef GLuint(APIENTRYP PFNGLCREATESHADERPROC)(GLenum type);
 typedef void(APIENTRYP PFNGLSHADERSOURCEPROC)(GLuint shader, GLsizei count,
                                               const GLchar *const *string,
@@ -137,6 +144,10 @@ typedef void(APIENTRYP PFNGLUNIFORM3FPROC)(GLint location, GLfloat v0,
                                            GLfloat v1, GLfloat v2);
 typedef void(APIENTRYP PFNGLUNIFORM4FPROC)(GLint location, GLfloat v0,
                                            GLfloat v1, GLfloat v2, GLfloat v3);
+typedef void(APIENTRYP PFNGLUNIFORMMATRIX4FVPROC)(GLint location, GLsizei count,
+                                                  GLboolean transpose,
+                                                  const GLfloat *value);
+typedef void(APIENTRYP PFNGLPOLYGONMODEPROC)(GLenum face, GLenum mode);
 typedef const GLubyte *(APIENTRYP PFNGLGETSTRINGPROC)(GLenum name);
 
 #define GL_VENDOR 0x1F00
@@ -150,6 +161,7 @@ GLAPI PFNGLDISABLEPROC glad_glDisable;
 GLAPI PFNGLVIEWPORTPROC glad_glViewport;
 GLAPI PFNGLDRAWELEMTSPROC glad_glDrawElements;
 GLAPI PFNGLDRAWARRAYSPROC glad_glDrawArrays;
+GLAPI PFNGLBLENDFUNCPROC glad_glBlendFunc;
 GLAPI PFNGLCREATESHADERPROC glad_glCreateShader;
 GLAPI PFNGLSHADERSOURCEPROC glad_glShaderSource;
 GLAPI PFNGLCOMPILESHADERPROC glad_glCompileShader;
@@ -181,6 +193,8 @@ GLAPI PFNGLUNIFORM1IPROC glad_glUniform1i;
 GLAPI PFNGLUNIFORM1FPROC glad_glUniform1f;
 GLAPI PFNGLUNIFORM3FPROC glad_glUniform3f;
 GLAPI PFNGLUNIFORM4FPROC glad_glUniform4f;
+GLAPI PFNGLUNIFORMMATRIX4FVPROC glad_glUniformMatrix4fv;
+GLAPI PFNGLPOLYGONMODEPROC glad_glPolygonMode;
 GLAPI PFNGLGETSTRINGPROC glad_glGetString;
 
 #define glClear glad_glClear
@@ -190,6 +204,7 @@ GLAPI PFNGLGETSTRINGPROC glad_glGetString;
 #define glViewport glad_glViewport
 #define glDrawElements glad_glDrawElements
 #define glDrawArrays glad_glDrawArrays
+#define glBlendFunc glad_glBlendFunc
 #define glCreateShader glad_glCreateShader
 #define glShaderSource glad_glShaderSource
 #define glCompileShader glad_glCompileShader
@@ -221,6 +236,8 @@ GLAPI PFNGLGETSTRINGPROC glad_glGetString;
 #define glUniform1f glad_glUniform1f
 #define glUniform3f glad_glUniform3f
 #define glUniform4f glad_glUniform4f
+#define glUniformMatrix4fv glad_glUniformMatrix4fv
+#define glPolygonMode glad_glPolygonMode
 #define glGetString glad_glGetString
 
 #ifdef __cplusplus

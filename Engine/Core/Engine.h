@@ -10,6 +10,11 @@ public:
   static void Shutdown();
   static void Run();
 
+  // Manual loop support for demos
+  static void Update();
+  static float GetDeltaTime();
+  static Platform::Window *GetWindow();
+
   static bool IsRunning() { return s_Running; }
   static void RequestExit() { s_Running = false; }
 
@@ -19,6 +24,7 @@ public:
 private:
   static bool s_Running;
   static float s_LastFrameTime;
+  static float s_DeltaTime;
 
   static void Update(float deltaTime);
   static void Render();

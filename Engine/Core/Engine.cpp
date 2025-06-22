@@ -1,7 +1,8 @@
 #include "Engine.h"
+#include "../Math/Math.h"
 #include "../Renderer/Renderer.h"
+#include "Camera.h"
 #include "Logger.h"
-
 
 #include <GLFW/glfw3.h>
 
@@ -9,23 +10,24 @@ namespace Engine {
 
 bool Engine::s_Running = false;
 float Engine::s_LastFrameTime = 0.0f;
+float Engine::s_DeltaTime = 0.0f;
 
 bool Engine::Initialize() {
-  ENGINE_LOG_INFO("Engine", "Initializing 3D Engine...");
+  Logger::Info("Engine", "Initializing 3D Engine...");
 
   // Initialize Logger
   Logger::Initialize();
 
   // Initialize platform layer
   if (!Platform::Window::Initialize()) {
-    ENGINE_LOG_ERROR("Engine", "Failed to initialize Window system!");
+    Logger::Error("Engine", "Failed to initialize Window system!");
     return false;
   }
 
   // Create window
-  Platform::WindowProperties props("3D Engine - Phase 1", 1280, 720, true);
+  Platform::WindowProperties props("3D Engine - Phase 2", 1280, 720, true);
   if (!Platform::Window::Create(props)) {
-    ENGINE_LOG_ERROR("Engine", "Failed to create window!");
+    Logger::Error("Engine", "Failed to create window!");
     return false;
   }
 
@@ -34,28 +36,49 @@ bool Engine::Initialize() {
 
   // Initialize renderer
   if (!Renderer::Initialize()) {
-    ENGINE_LOG_ERROR("Engine", "Failed to initialize Renderer!");
+    Logger::Error("Engine", "Failed to initialize Renderer!");
     return false;
   }
 
   s_Running = true;
-  ENGINE_LOG_INFO("Engine", "Engine initialized successfully!");
+  Logger::Info("Engine", "Engine initialized successfully!");
   return true;
 }
 
 void Engine::Shutdown() {
-  ENGINE_LOG_INFO("Engine", "Shutting down engine...");
+  Logger::Info("Engine", "Shutting down engine...");
 
   Renderer::Shutdown();
   Platform::Window::Shutdown();
   Logger::Shutdown();
 
   s_Running = false;
-  ENGINE_LOG_INFO("Engine", "Engine shutdown complete.");
+  Logger::Info("Engine", "Engine shutdown complete.");
+}
+
+// Manual loop support for demos
+void Engine::Update() {
+  float time = static_cast<float>(glfwGetTime());
+  s_DeltaTime = time - s_LastFrameTime;
+  s_LastFrameTime = time;
+
+  Platform::Window::PollEvents();
+
+  if (Platform::Window::ShouldClose()) {
+    RequestExit();
+  }
+
+  Platform::Window::SwapBuffers();
+}
+
+float Engine::GetDeltaTime() { return s_DeltaTime; }
+
+Platform::Window *Engine::GetWindow() {
+  return nullptr; // TODO: Implement proper window wrapper
 }
 
 void Engine::Run() {
-  ENGINE_LOG_INFO("Engine", "Starting main loop...");
+  Logger::Info("Engine", "Starting main loop...");
 
   while (s_Running) {
     float time = static_cast<float>(glfwGetTime());
@@ -75,7 +98,7 @@ void Engine::Run() {
     Platform::Window::SwapBuffers();
   }
 
-  ENGINE_LOG_INFO("Engine", "Main loop ended.");
+  Logger::Info("Engine", "Main loop ended.");
 }
 
 void Engine::OnEvent(Platform::Event &event) {
@@ -100,23 +123,51 @@ void Engine::Update(float deltaTime) {
 }
 
 void Engine::Render() {
-  Renderer::Clear();
+  Renderer::Clear(0.1f, 0.1f, 0.2f, 1.0f);
 
-  // Render our first triangle!
-  Renderer::DrawTriangle();
+  // Phase 2: Render a simple rotating cube
+  static float time = 0.0f;
+  time += 0.016f; // Approximate 60 FPS
 
-  // Future: Render scene objects, UI, etc.
+  // Create camera
+  Camera camera;
+  camera.SetPosition(Vec3(0.0f, 0.0f, 5.0f));
+  camera.LookAt(Vec3(0.0f, 0.0f, 0.0f));
+  camera.SetFieldOfView(45.0f);
+  camera.SetAspectRatio(1280.0f, 720.0f);
+
+  // Create rotating transform
+  Transform cubeTransform;
+  cubeTransform.position = Vec3(0.0f, 0.0f, 0.0f);
+  cubeTransform.scale = Vec3(1.0f, 1.0f, 1.0f);
+
+  // Rotate around Y and X axes
+  float rotationY = time * 45.0f; // degrees
+  float rotationX = time * 20.0f; // degrees
+  Quaternion yRot =
+      Quaternion::FromAxisAngle(Vec3::Up(), Math::ToRadians(rotationY));
+  Quaternion xRot =
+      Quaternion::FromAxisAngle(Vec3::Right(), Math::ToRadians(rotationX));
+  cubeTransform.rotation = yRot * xRot;
+
+  // Render solid cube
+  Renderer::DrawCube(camera, cubeTransform, Vec3(0.8f, 0.6f, 0.4f));
+
+  // Render wireframe cube slightly larger
+  Transform wireTransform = cubeTransform;
+  wireTransform.scale = Vec3(1.1f, 1.1f, 1.1f);
+  Renderer::DrawWireCube(camera, wireTransform, Vec3(1.0f, 1.0f, 1.0f));
 }
 
 bool Engine::OnWindowClose(Platform::Event &event) {
-  ENGINE_LOG_INFO("Engine", "Window close requested");
+  Logger::Info("Engine", "Window close requested");
   RequestExit();
   return true;
 }
 
 bool Engine::OnWindowResize(Platform::WindowResizeEvent &event) {
-  ENGINE_LOG_INFO("Engine", "Window resized to " + std::to_string(event.Width) +
-                                "x" + std::to_string(event.Height));
+  Logger::Info("Engine", "Window resized to " + std::to_string(event.Width) +
+                             "x" + std::to_string(event.Height));
 
   Renderer::SetViewport(0, 0, event.Width, event.Height);
   return true;
@@ -125,7 +176,7 @@ bool Engine::OnWindowResize(Platform::WindowResizeEvent &event) {
 bool Engine::OnKeyPressed(Platform::KeyPressedEvent &event) {
   // ESC key to exit
   if (event.KeyCode == 256) { // GLFW_KEY_ESCAPE
-    ENGINE_LOG_INFO("Engine", "Escape key pressed, exiting...");
+    Logger::Info("Engine", "Escape key pressed, exiting...");
     RequestExit();
     return true;
   }

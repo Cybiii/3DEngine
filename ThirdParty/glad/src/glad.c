@@ -76,6 +76,7 @@ PFNGLDISABLEPROC glad_glDisable = NULL;
 PFNGLVIEWPORTPROC glad_glViewport = NULL;
 PFNGLDRAWELEMTSPROC glad_glDrawElements = NULL;
 PFNGLDRAWARRAYSPROC glad_glDrawArrays = NULL;
+PFNGLBLENDFUNCPROC glad_glBlendFunc = NULL;
 PFNGLCREATESHADERPROC glad_glCreateShader = NULL;
 PFNGLSHADERSOURCEPROC glad_glShaderSource = NULL;
 PFNGLCOMPILESHADERPROC glad_glCompileShader = NULL;
@@ -106,6 +107,8 @@ PFNGLUNIFORM1IPROC glad_glUniform1i = NULL;
 PFNGLUNIFORM1FPROC glad_glUniform1f = NULL;
 PFNGLUNIFORM3FPROC glad_glUniform3f = NULL;
 PFNGLUNIFORM4FPROC glad_glUniform4f = NULL;
+PFNGLUNIFORMMATRIX4FVPROC glad_glUniformMatrix4fv = NULL;
+PFNGLPOLYGONMODEPROC glad_glPolygonMode = NULL;
 PFNGLGETSTRINGPROC glad_glGetString = NULL;
 PFNGLDELETEVERTEXARRAYSPROC glad_glDeleteVertexArrays = NULL;
 
@@ -117,6 +120,7 @@ static void load_GL_functions(void) {
   glad_glViewport = (PFNGLVIEWPORTPROC)get_proc("glViewport");
   glad_glDrawElements = (PFNGLDRAWELEMTSPROC)get_proc("glDrawElements");
   glad_glDrawArrays = (PFNGLDRAWARRAYSPROC)get_proc("glDrawArrays");
+  glad_glBlendFunc = (PFNGLBLENDFUNCPROC)get_proc("glBlendFunc");
   glad_glCreateShader = (PFNGLCREATESHADERPROC)get_proc("glCreateShader");
   glad_glShaderSource = (PFNGLSHADERSOURCEPROC)get_proc("glShaderSource");
   glad_glCompileShader = (PFNGLCOMPILESHADERPROC)get_proc("glCompileShader");
@@ -158,6 +162,9 @@ static void load_GL_functions(void) {
   glad_glUniform1f = (PFNGLUNIFORM1FPROC)get_proc("glUniform1f");
   glad_glUniform3f = (PFNGLUNIFORM3FPROC)get_proc("glUniform3f");
   glad_glUniform4f = (PFNGLUNIFORM4FPROC)get_proc("glUniform4f");
+  glad_glUniformMatrix4fv =
+      (PFNGLUNIFORMMATRIX4FVPROC)get_proc("glUniformMatrix4fv");
+  glad_glPolygonMode = (PFNGLPOLYGONMODEPROC)get_proc("glPolygonMode");
   glad_glGetString = (PFNGLGETSTRINGPROC)get_proc("glGetString");
 }
 

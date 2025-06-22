@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include "../Core/Logger.h"
+#include "../Math/Math.h"
 
 #include <glad/glad.h>
 
@@ -8,7 +9,6 @@
 #include <memory>
 #include <sstream>
 #include <vector>
-
 
 namespace Engine {
 
@@ -30,6 +30,18 @@ Shader::Shader(const std::string &name, const std::string &vertexSrc,
   std::unordered_map<uint32_t, std::string> sources;
   sources[GL_VERTEX_SHADER] = vertexSrc;
   sources[GL_FRAGMENT_SHADER] = fragmentSrc;
+  Compile(sources);
+}
+
+Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath)
+    : m_RendererID(0), m_Name("FileShader") {
+
+  std::string vertexSource = ReadFile(vertexPath);
+  std::string fragmentSource = ReadFile(fragmentPath);
+
+  std::unordered_map<uint32_t, std::string> sources;
+  sources[GL_VERTEX_SHADER] = vertexSource;
+  sources[GL_FRAGMENT_SHADER] = fragmentSource;
   Compile(sources);
 }
 
@@ -60,13 +72,40 @@ void Shader::SetFloat4(const std::string &name, float x, float y, float z,
   glUniform4f(GetUniformLocation(name), x, y, z, w);
 }
 
+void Shader::SetMat4(const std::string &name, const Mat4 &matrix) {
+  glUniformMatrix4fv(GetUniformLocation(name), 1, GL_TRUE, matrix.data);
+}
+
+void Shader::SetVec3(const std::string &name, const Vec3 &vector) {
+  glUniform3f(GetUniformLocation(name), vector.x, vector.y, vector.z);
+}
+
+std::string Shader::ReadFile(const std::string &filepath) {
+  std::string result;
+  std::ifstream in(filepath, std::ios::in | std::ios::binary);
+  if (in) {
+    in.seekg(0, std::ios::end);
+    size_t size = in.tellg();
+    if (size != -1) {
+      result.resize(size);
+      in.seekg(0, std::ios::beg);
+      in.read(&result[0], size);
+    } else {
+      Logger::Error("Shader", "Could not read from file '" + filepath + "'");
+    }
+  } else {
+    Logger::Error("Shader", "Could not open file '" + filepath + "'");
+  }
+  return result;
+}
+
 int Shader::GetUniformLocation(const std::string &name) const {
   if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
     return m_UniformLocationCache[name];
 
   int location = glGetUniformLocation(m_RendererID, name.c_str());
   if (location == -1)
-    ENGINE_LOG_WARN("Shader", "Warning: uniform '" + name + "' doesn't exist!");
+    Logger::Warn("Shader", "Warning: uniform '" + name + "' doesn't exist!");
 
   m_UniformLocationCache[name] = location;
   return location;
@@ -100,8 +139,8 @@ void Shader::Compile(
 
       glDeleteShader(shader);
 
-      ENGINE_LOG_ERROR("Shader", "Shader compilation failure!");
-      ENGINE_LOG_ERROR("Shader", infoLog.data());
+      Logger::Error("Shader", "Shader compilation failure!");
+      Logger::Error("Shader", std::string(infoLog.data()));
       break;
     }
 
@@ -131,8 +170,8 @@ void Shader::Compile(
     for (auto id : glShaderIDs)
       glDeleteShader(id);
 
-    ENGINE_LOG_ERROR("Shader", "Shader link failure!");
-    ENGINE_LOG_ERROR("Shader", infoLog.data());
+    Logger::Error("Shader", "Shader link failure!");
+    Logger::Error("Shader", std::string(infoLog.data()));
     return;
   }
 
@@ -141,7 +180,7 @@ void Shader::Compile(
     glDeleteShader(id);
   }
 
-  ENGINE_LOG_INFO("Shader", "Shader '" + m_Name + "' compiled successfully");
+  Logger::Info("Shader", "Shader '" + m_Name + "' compiled successfully");
 }
 
 std::shared_ptr<Shader> Shader::Create(const std::string &name,

@@ -1,25 +1,24 @@
-#include <Engine/Core/Engine.h>
-#include <Engine/Core/Logger.h>
-#include <Engine/Platform/Window.h>
-#include <Engine/Renderer/Renderer.h>
+#include "Core/Engine.h"
+#include "Core/Logger.h"
+#include "Platform/Window.h"
+#include "Renderer/Renderer.h"
 
 #include <cassert>
 #include <iostream>
 
-
 // Simple test framework
 #define TEST_ASSERT(condition, message)                                        \
   if (!(condition)) {                                                          \
-    ENGINE_LOG_ERROR("TEST", "FAILED: " message);                              \
+    Engine::Logger::Error("TEST", "FAILED: " message);                         \
     return false;                                                              \
   } else {                                                                     \
-    ENGINE_LOG_INFO("TEST", "PASSED: " message);                               \
+    Engine::Logger::Info("TEST", "PASSED: " message);                          \
   }
 
 class Phase1Tests {
 public:
   static bool RunAllTests() {
-    ENGINE_LOG_INFO("TEST", "=== Starting Phase 1 Integration Tests ===");
+    Engine::Logger::Info("TEST", "=== Starting Phase 1 Integration Tests ===");
 
     bool allPassed = true;
 
@@ -29,9 +28,9 @@ public:
     allPassed &= TestRendererSystem();
 
     if (allPassed) {
-      ENGINE_LOG_INFO("TEST", "=== ALL TESTS PASSED ===");
+      Engine::Logger::Info("TEST", "=== ALL TESTS PASSED ===");
     } else {
-      ENGINE_LOG_ERROR("TEST", "=== SOME TESTS FAILED ===");
+      Engine::Logger::Error("TEST", "=== SOME TESTS FAILED ===");
     }
 
     return allPassed;
@@ -39,27 +38,22 @@ public:
 
 private:
   static bool TestLoggerSystem() {
-    ENGINE_LOG_INFO("TEST", "Testing Logger System...");
-
-    // Test logger initialization
-    Engine::Logger::Initialize();
-    TEST_ASSERT(true, "Logger initialization");
+    Engine::Logger::Info("TEST", "Testing Logger System...");
 
     // Test different log levels
-    Engine::Logger::Trace("Test trace message");
-    Engine::Logger::Debug("Test debug message");
-    Engine::Logger::Info("Test info message");
-    Engine::Logger::Warn("Test warning message");
-    Engine::Logger::Error("Test error message");
+    Engine::Logger::Trace("TEST", "Test trace message");
+    Engine::Logger::Debug("TEST", "Test debug message");
+    Engine::Logger::Info("TEST", "Test info message");
+    Engine::Logger::Warn("TEST", "Test warning message");
+    Engine::Logger::Error("TEST", "Test error message");
 
     TEST_ASSERT(true, "Logger message output");
 
-    Engine::Logger::Shutdown();
     return true;
   }
 
   static bool TestWindowSystem() {
-    ENGINE_LOG_INFO("TEST", "Testing Window System...");
+    Engine::Logger::Info("TEST", "Testing Window System...");
 
     // Test GLFW initialization
     bool initialized = Engine::Platform::Window::Initialize();
@@ -96,7 +90,7 @@ private:
   }
 
   static bool TestEngineInitialization() {
-    ENGINE_LOG_INFO("TEST", "Testing Engine Initialization...");
+    Engine::Logger::Info("TEST", "Testing Engine Initialization...");
 
     // Test engine initialization
     bool initialized = Engine::Engine::Initialize();
@@ -113,11 +107,9 @@ private:
   }
 
   static bool TestRendererSystem() {
-    ENGINE_LOG_INFO("TEST", "Testing Renderer System...");
+    Engine::Logger::Info("TEST", "Testing Renderer System...");
 
     // For renderer testing, we need a valid OpenGL context
-    Engine::Logger::Initialize();
-
     bool windowInit = Engine::Platform::Window::Initialize();
     TEST_ASSERT(windowInit, "Window system for renderer test");
 
@@ -130,8 +122,7 @@ private:
     TEST_ASSERT(rendererInit, "Renderer initialization");
 
     // Test basic renderer operations
-    Engine::Renderer::SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    Engine::Renderer::Clear();
+    Engine::Renderer::Clear(0.2f, 0.3f, 0.3f, 1.0f);
     TEST_ASSERT(true, "Renderer clear operations");
 
     Engine::Renderer::SetViewport(0, 0, 800, 600);
@@ -144,7 +135,6 @@ private:
 
     Engine::Renderer::Shutdown();
     Engine::Platform::Window::Shutdown();
-    Engine::Logger::Shutdown();
 
     return true;
   }
